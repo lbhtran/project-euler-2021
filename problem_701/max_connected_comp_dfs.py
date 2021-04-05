@@ -93,23 +93,35 @@ if __name__ == '__main__':
 
     tic = time.perf_counter()
 
-    n = 4
+    n = 7
     (row, col) = (n, n)
 
-    total_rectangles = 0
-    total_max_connected_grid_value = 0
+    # total_rectangles = 0
+    # total_max_connected_grid_value = 0
+    #
+    # with tqdm(total=2**(n * n)) as pbar:
+    #
+    #     for i in itertools.product([0, 1], repeat=n * n):
+    #         rec = np.reshape(np.array(i), (n, n))
+    #         g = Graph(row, col, rec)
+    #         max_connected_grid = g.largestRegion()
+    #         total_rectangles += 1
+    #         total_max_connected_grid_value += max_connected_grid
+    #         pbar.update(1)
+    #
+    # expected_max_connected_grid = total_max_connected_grid_value / total_rectangles
 
-    with tqdm(total=2**(n * n)) as pbar:
-
-        for i in itertools.product([0, 1], repeat=n * n):
-            rec = np.reshape(np.array(i), (n, n))
-            g = Graph(row, col, rec)
-            max_connected_grid = g.largestRegion()
-            total_rectangles += 1
-            total_max_connected_grid_value += max_connected_grid
-            pbar.update(1)
-
-    expected_max_connected_grid = total_max_connected_grid_value / total_rectangles
+    rec = [
+            [0, 0, 0, 0, 1, 1, 0],
+            [0, 0, 0, 0, 1, 1, 0],
+            [0, 1, 0, 0, 1, 1, 0],
+            [0, 0, 1, 0, 1, 1, 0],
+            [0, 0, 1, 0, 1, 1, 0],
+            [0, 0, 0, 0, 1, 1, 0],
+            [0, 0, 0, 0, 1, 1, 0],
+            ]
+    g = Graph(row, col, rec)
+    max_connected_grid = g.largestRegion()
 
     toc = time.perf_counter()
 
@@ -117,6 +129,8 @@ if __name__ == '__main__':
 
     print(f"Calculation completed in {toc - tic:0.4f} seconds")
 
-    print(f'Expected value: {round(expected_max_connected_grid, 8)}')
-    print(f'Sum of all connected areas: {total_max_connected_grid_value}')
-    print(f'Total search space: {total_rectangles}')
+    print(f'Max connected grid value is {max_connected_grid}')
+
+    # print(f'Expected value: {round(expected_max_connected_grid, 8)}')
+    # print(f'Sum of all connected areas: {total_max_connected_grid_value}')
+    # print(f'Total search space: {total_rectangles}')

@@ -21,25 +21,31 @@ def process_expected_area(i):
     total_max_connected_grid_value.increment(max_connected_grid)
 
 
-
 if __name__ == '__main__':
     import time
     import itertools
     import numpy as np
+    import math
+    # from iteration_utilities import random_product
 
     tic = time.perf_counter()
 
-    n = 5
+    n = 7
     (row, col) = (n, n)
 
     total_rectangles = Counter()
     total_max_connected_grid_value = Counter()
+    max_iter = 2**(n*n) # math.ceil(2**(n*n) / 10000000)
+    iter_steps = 500000000 # 2**math.ceil((n*n)/2)
 
     try:
+        p = itertools.product([0, 1], repeat=n*n)
+        s = itertools.islice(p, 0, max_iter, iter_steps)
         max_number_processes = multiprocessing.cpu_count()
         print(f'Running with {max_number_processes} processes.')
+        # print(f'Total search space is {len(s)}')
         pool = multiprocessing.Pool(max_number_processes)  # on max no of processors
-        data_outputs = pool.map(process_expected_area, itertools.product([0, 1], repeat=n*n))
+        data_outputs = pool.map(process_expected_area, s)
     finally:  # To make sure processes are closed in the end, even if errors happen
         pool.close()
         pool.join()
